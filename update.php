@@ -15,6 +15,12 @@ try {
         $show = $pdo->query("SELECT * FROM `article` WHERE `id` = $id")->fetch();
     }
 
+    if(count($_POST)) {
+        $name = $_POST['name']; $description = $_POST['description']; $id = $_POST['id'];
+        $pdo->exec("UPDATE `article` SET `name` = '$name', `description` = '$description', `created_at` = NOW() WHERE `id` = $id");
+        header("Location: index.php");
+    }
+
 } catch (PDOException $e) {
     exit($e->getMessage());
 }
@@ -32,7 +38,7 @@ try {
 </head>
 <body>
     <div>
-        <form method='post' action='index.php'>
+        <form method='post' action='update.php'>
             <input type='text' name='name' value='<?php echo $show[name] ?>'><br><br>
             <input type='text' name='description' value='<?php echo $show[description] ?>'><br><br>
             <input type="hidden" name="id" value="<?php echo $show[id] ?>">

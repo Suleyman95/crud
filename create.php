@@ -6,6 +6,20 @@
  * Time: 23:50
  */
 
+try {
+    $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=crud', 'root', 'root');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if(count($_POST)) {
+        $name = $_POST['name']; $description = $_POST['description'];
+        $pdo->exec("INSERT INTO `article` VALUES(NULL, '$name', '$description', NOW())");
+        header("Location: index.php");
+    }
+
+} catch (PDOException $e) {
+    exit($e->getMessage());
+}
+
 ?>
 
 <!doctype html>
@@ -20,10 +34,10 @@
 <body>
 
     <div>
-        <form method='post' action='index.php'>
+        <form method='post' action='create.php'>
             <input type='text' name='name'><br><br>
             <input type='text' name='description'><br><br>
-            <input type="submit" name="btn" value="Add">
+            <input type="submit" value="Add">
         </form>
     </div>
 

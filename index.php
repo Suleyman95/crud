@@ -11,17 +11,6 @@ try {
     $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=crud', 'root', 'root');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if(count($_POST)) {
-        if($_POST['btn'] == 'Add') {
-            $name = $_POST['name']; $description = $_POST['description'];
-            $pdo->exec("INSERT INTO `article` VALUES(NULL, '$name', '$description', NOW())");
-        }
-        if($_POST['btn'] == 'Update') {
-            $name = $_POST['name']; $description = $_POST['description']; $id = $_POST['id'];
-            $pdo->exec("UPDATE `article` SET `name` = '$name', `description` = '$description', `created_at` = NOW() WHERE `id` = $id");
-        }
-    }
-
     $show = $pdo->query("SELECT * FROM `article` ORDER BY `created_at` DESC")->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
@@ -46,7 +35,9 @@ try {
     </style>
 </head>
 <body>
-    <div><a href="create.php">Create article</a><a href="update.php">Update artile</a><a href="delete.php">Delete artile</a></div>
+    <div>
+        <a href="create.php">Create article</a>
+    </div>
     <?php foreach ($show as $value) : ?>
         <div>
             <p><?php echo $value['name'] ?>
