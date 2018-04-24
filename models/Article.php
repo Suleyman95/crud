@@ -1,12 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: msv
- * Date: 23.04.18
- * Time: 23:57
+ * Class Article
+ *
  */
 
-class Article {
+class Article
+{
 
     private $dbhost = '127.0.0.1:3306';
     private $dbname = 'crud';
@@ -14,7 +13,12 @@ class Article {
     private $dbpass = 'root';
     public $pdo;
 
-    private function connect() {
+    /**
+     * @return PDO
+     *
+     */
+    private function connect()
+    {
 
         try {
             $pdo = new PDO("mysql:host=$this->dbhost;dbname=$this->dbname", $this->dblogin, $this->dbpass);
@@ -27,7 +31,12 @@ class Article {
         return $pdo;
     }
 
-    public function showAll() {
+    /**
+     * @return array
+     *
+     */
+    public function showAll()
+    {
 
         $conn = $this->connect();
 
@@ -37,7 +46,13 @@ class Article {
         return $res;
     }
 
-    public function create($name, $description) {
+    /**
+     * @param $name
+     * @param $description
+     *
+     */
+    public function create($name, $description)
+    {
 
         $conn = $this->connect();
 
@@ -45,21 +60,34 @@ class Article {
         $conn->exec($sql);
     }
 
-    public function update($id, $name = false, $description = false) {
+    /**
+     * @param $id
+     * @param bool $name
+     * @param bool $description
+     * @return mixed|void
+     *
+     */
+    public function update($id, $name = false, $description = false)
+    {
 
         $conn = $this->connect();
         $sql = "SELECT * FROM `article` WHERE `id` = $id";
         $sql2 = "UPDATE `article` SET `name` = '$name', `description` = '$description', `created_at` = NOW() WHERE `id` = $id";
-        if($id && $name && $description) {
+        if ($id && $name && $description) {
             $conn->exec($sql2);
             return;
         }
-        if($id && !$name && !$description) {
+        if ($id && !$name && !$description) {
             return $conn->query($sql)->fetch();
         }
     }
 
-    public function delete($id) {
+    /**
+     * @param $id
+     *
+     */
+    public function delete($id)
+    {
 
         $conn = $this->connect();
         $sql = "DELETE FROM `article` WHERE `id` = $id";
